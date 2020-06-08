@@ -29,6 +29,7 @@ rgb_inactive_pcd (new RgbPointCloud)
     get_all &= nh.getParam("fuse_far_distence", far_dist);
     get_all &= nh.getParam("fuse_near_distence", near_dist);
     get_all &= nh.getParam("drift_free_poses", drift_free_poses);
+    get_all &= nh.getParam("write_normal2ply",write_normal_to_ply);
 
     if(!get_all)
         printf("ERROR! Do not have enough parameters!");
@@ -881,24 +882,40 @@ void SurfelMap::push_a_surfel(vector<float> &vertexs, SurfelElement &this_surfel
     point5 = surfel_position - x_dir * h_r + y_dir * t_r;
     point6 = surfel_position + x_dir * h_r + y_dir * t_r;
     if(image_buffer[0].second.channels() ==3){
-        vertexs.push_back(point1(0));vertexs.push_back(point1(1));vertexs.push_back(point1(2));
-        vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
-//    vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
-        vertexs.push_back(point2(0));vertexs.push_back(point2(1));vertexs.push_back(point2(2));
-        vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
-//    vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
-        vertexs.push_back(point3(0));vertexs.push_back(point3(1));vertexs.push_back(point3(2));
-        vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
-//    vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
-        vertexs.push_back(point4(0));vertexs.push_back(point4(1));vertexs.push_back(point4(2));
-        vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
-//    vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
-        vertexs.push_back(point5(0));vertexs.push_back(point5(1));vertexs.push_back(point5(2));
-        vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
-//    vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
-        vertexs.push_back(point6(0));vertexs.push_back(point6(1));vertexs.push_back(point6(2));
-        vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
-//    vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
+        if(write_normal_to_ply){  // record mesh
+            vertexs.push_back(point1(0));vertexs.push_back(point1(1));vertexs.push_back(point1(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(surfel_norm(0));vertexs.push_back(surfel_norm(1));vertexs.push_back(surfel_norm(2));
+            vertexs.push_back(point2(0));vertexs.push_back(point2(1));vertexs.push_back(point2(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(surfel_norm(0));vertexs.push_back(surfel_norm(1));vertexs.push_back(surfel_norm(2));
+            vertexs.push_back(point3(0));vertexs.push_back(point3(1));vertexs.push_back(point3(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(surfel_norm(0));vertexs.push_back(surfel_norm(1));vertexs.push_back(surfel_norm(2));
+            vertexs.push_back(point4(0));vertexs.push_back(point4(1));vertexs.push_back(point4(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(surfel_norm(0));vertexs.push_back(surfel_norm(1));vertexs.push_back(surfel_norm(2));
+            vertexs.push_back(point5(0));vertexs.push_back(point5(1));vertexs.push_back(point5(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(surfel_norm(0));vertexs.push_back(surfel_norm(1));vertexs.push_back(surfel_norm(2));
+            vertexs.push_back(point6(0));vertexs.push_back(point6(1));vertexs.push_back(point6(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(surfel_norm(0));vertexs.push_back(surfel_norm(1));vertexs.push_back(surfel_norm(2));
+        }
+        else{   // not record mesh
+            vertexs.push_back(point1(0));vertexs.push_back(point1(1));vertexs.push_back(point1(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(point2(0));vertexs.push_back(point2(1));vertexs.push_back(point2(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(point3(0));vertexs.push_back(point3(1));vertexs.push_back(point3(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(point4(0));vertexs.push_back(point4(1));vertexs.push_back(point4(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(point5(0));vertexs.push_back(point5(1));vertexs.push_back(point5(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+            vertexs.push_back(point6(0));vertexs.push_back(point6(1));vertexs.push_back(point6(2));
+            vertexs.push_back(rgb_color[0]);vertexs.push_back(rgb_color[1]);vertexs.push_back(rgb_color[2]);
+        }
     }
     else {
         vertexs.push_back(point1(0));vertexs.push_back(point1(1));vertexs.push_back(point1(2));
@@ -941,27 +958,53 @@ void SurfelMap::save_mesh(string save_path_name)
         SurfelElement this_surfel = local_surfels[i];
         push_a_surfel(vertexs, this_surfel);
     }
-    
-    size_t numPoints = vertexs.size()/6;
-    size_t numSurfels = numPoints/6;
-    stream << "ply" << std::endl;
-    stream << "format ascii 1.0" << std::endl;
-    stream << "element vertex " << numPoints << std::endl;
-    stream << "property float x" << std::endl;
-    stream << "property float y" << std::endl;
-    stream << "property float z" << std::endl;
-    stream << "property uchar red" << std::endl;
-    stream << "property uchar green" << std::endl;
-    stream << "property uchar blue" << std::endl;
-    stream << "element face " << numSurfels * 4 <<  std::endl;
-    stream << "property list uchar int vertex_index" << std::endl;
-    stream << "end_header" << std::endl;
+
+    size_t numPoints;
+    size_t numSurfels;
+    int num_vertex_ele;
+    if(write_normal_to_ply){
+        num_vertex_ele = 9;
+        numPoints = vertexs.size()/9;
+        numSurfels = numPoints/9;
+        stream << "ply" << std::endl;
+        stream << "format ascii 1.0" << std::endl;
+        stream << "element vertex " << numPoints << std::endl;
+        stream << "property float x" << std::endl;
+        stream << "property float y" << std::endl;
+        stream << "property float z" << std::endl;
+        stream << "property uchar red" << std::endl;
+        stream << "property uchar green" << std::endl;
+        stream << "property uchar blue" << std::endl;
+        stream << "property float nx" << std::endl;
+        stream << "property float ny" << std::endl;
+        stream << "property float nz" << std::endl;
+        stream << "element face " << numSurfels * 4 <<  std::endl;
+        stream << "property list uchar int vertex_index" << std::endl;
+        stream << "end_header" << std::endl;
+    }
+    else{
+        num_vertex_ele = 6;
+        numPoints = vertexs.size()/6;
+        numSurfels = numPoints/6;
+        stream << "ply" << std::endl;
+        stream << "format ascii 1.0" << std::endl;
+        stream << "element vertex " << numPoints << std::endl;
+        stream << "property float x" << std::endl;
+        stream << "property float y" << std::endl;
+        stream << "property float z" << std::endl;
+        stream << "property uchar red" << std::endl;
+        stream << "property uchar green" << std::endl;
+        stream << "property uchar blue" << std::endl;
+        stream << "element face " << numSurfels * 4 <<  std::endl;
+        stream << "property list uchar int vertex_index" << std::endl;
+        stream << "end_header" << std::endl;
+    }
 
     for(int i = 0; i < numPoints; i++)
     {
-        for(int j = 0; j < 6; j++)
+        for(int j = 0; j < num_vertex_ele; j++)
         {
-            stream << vertexs[i*6+j] << " ";
+            stream << vertexs[i*num_vertex_ele+j] << " ";
         }
         stream << std::endl;
     }

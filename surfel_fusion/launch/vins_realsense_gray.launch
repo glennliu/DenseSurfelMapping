@@ -5,17 +5,11 @@
         <param name="cam_width"  value="640" />
         <param name="cam_height" value="480" />
 
-        <!-- realsense rgb_image info-->
-        <param name="cam_fx" value="611.603515625" />
-        <param name="cam_fy" value="611.7554321289062" />
-        <param name="cam_cx" value="317.1910400390625" />
-        <param name="cam_cy" value="242.47885131835938" />
-        
         <!-- realsense gray image info-->
-        <!-- <param name="cam_fx" value="384.6184387207031" />
+        <param name="cam_fx" value="384.6184387207031" />
         <param name="cam_fy" value="384.6184387207031" />
         <param name="cam_cx" value="322.1982116699219" />
-        <param name="cam_cy" value="236.26963806152344" /> -->
+        <param name="cam_cy" value="236.26963806152344" />
 
         <!-- fusion parameter, all in meter -->
         <param name="fuse_far_distence"  value="3.0" />
@@ -29,10 +23,10 @@
         <param name="write_normal2ply" value="true" />
 
         <!-- for data save -->
-<!--        <remap from="~image" to="/camera/infra1/image_rect_raw" />-->
-<!--        <remap from="~depth" to="/camera/depth/image_rect_raw" />-->
-        <remap from="~image" to="/camera/color/image_raw" />
-        <remap from="~depth" to="/camera/aligned_depth_to_color/image_raw" />
+        <remap from="~image" to="/camera/infra1/image_rect_raw" />
+        <remap from="~depth" to="/camera/depth/image_rect_raw" />
+        <!-- <remap from="~image" to="/camera/color/image_raw" />
+        <remap from="~depth" to="/camera/aligned_depth_to_color/image_raw" /> -->
         <remap from="~loop_path" to="/loop_fusion/pose_graph_path" />
         <remap from="~extrinsic_pose" to="/vins_estimator/extrinsic" />
         <param name="save_name" value="$(find surfel_fusion)/../../../output_map"/>

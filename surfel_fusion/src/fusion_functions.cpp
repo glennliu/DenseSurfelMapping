@@ -205,6 +205,7 @@ void FusionFunctions::fuse_surfels_kernel(
     Eigen::Matrix4f inv_pose)
 {
     std::vector<SurfelElement> &local_surfels = *local_surfels_ptr;
+    std::vector<SurfelElement> tmp_surfel = *local_surfels_ptr;
 
     int step = local_surfels.size() / thread_num;
     int begin_index = step * thread_i;

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+// #include <eigen3/Eigen/Eigen>
 #include <Eigen/Eigen>
 #include <opencv2/opencv.hpp>
 
@@ -179,6 +180,7 @@ public:
 
     // save map
     string map_dir;
+    bool write_normal_to_ply;
 
     // for gaofei experiment
     bool is_first_path;
