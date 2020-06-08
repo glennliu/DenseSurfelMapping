@@ -20,18 +20,15 @@
 
         <!--true: surfel[x,y,z,r,g,b,nx,ny,nz]-->
         <!--false: surfel[x,y,z,r,g,b]-->
-        <param name="write_normal2ply" value="true" />
+        <param name="write_normal2ply" value="false" />
 
         <!-- for data save -->
         <remap from="~image" to="/camera/infra1/image_rect_raw" />
         <remap from="~depth" to="/camera/depth/image_rect_raw" />
-        <!-- <remap from="~image" to="/camera/color/image_raw" />
-        <remap from="~depth" to="/camera/aligned_depth_to_color/image_raw" /> -->
         <remap from="~loop_path" to="/loop_fusion/pose_graph_path" />
         <remap from="~extrinsic_pose" to="/vins_estimator/extrinsic" />
         <param name="save_name" value="$(find surfel_fusion)/../../../output_map"/>
 <!--        <param name="save_name" value="/home/lch/teach_repeat_ws/output"/>-->
-
     </node>
 
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find surfel_fusion)/launch/surfel.rviz" />

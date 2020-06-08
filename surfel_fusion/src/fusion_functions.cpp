@@ -1655,7 +1655,6 @@ void FusionFunctions::debug_show()
         debug_image = result;
     }
 
-
     std::string pic_full_dir  = "/home/lch/Pictures/" + std::string(std::to_string(frame_index_))
             + std::string(".png") ;
 //    cv::imwrite(pic_full_dir,debug_image);
