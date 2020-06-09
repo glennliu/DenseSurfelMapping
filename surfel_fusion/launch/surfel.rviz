@@ -6,7 +6,6 @@ Panels:
       Expanded:
         - /TF1/Tree1
         - /VioOdom1/Shape1
-        - /rawCloud1
         - /spImage1
         - /depthImage1
       Splitter Ratio: 0.498559088
@@ -27,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: rgbCloud
+    SyncSource: rawCloud
   - Class: rviz/Displays
     Help Height: 78
     Name: Displays
@@ -266,8 +265,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 2.63215089
-        Min Value: -0.346845061
+        Max Value: -9999
+        Min Value: 9999
         Value: true
       Axis: Z
       Channel Name: intensity

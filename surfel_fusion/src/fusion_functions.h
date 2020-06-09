@@ -86,7 +86,7 @@ private:
     float get_weight(float &depth);
 
     // for debug
-    void debug_show();
+    void debug_show(cv::Mat &debug_img);
 
 public:
     void initialize(

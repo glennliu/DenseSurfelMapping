@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <pcl/io/pcd_io.h>
 
+
+
 SurfelMap::SurfelMap(ros::NodeHandle &_nh):
 nh(_nh),
 // fuse_param_gpuptr(NULL),

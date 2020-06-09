@@ -62,6 +62,7 @@ target_link_libraries(surfel_fusion
   ${catkin_LIBRARIES} 
   ${OpenCV_LIBS} 
   ${Boost_LIBRARIES} 
+  -ldw 
   # ${OPENGL_LIBRARY}
 	# ${GLEW_LIBRARY}
   # ${GLFW3_LIBRARY}

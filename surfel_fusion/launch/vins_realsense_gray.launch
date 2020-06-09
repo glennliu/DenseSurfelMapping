@@ -24,7 +24,8 @@
 
         <!-- for data save -->
         <remap from="~image" to="/camera/infra1/image_rect_raw" />
-        <remap from="~depth" to="/camera/depth/image_rect_raw" />
+        <!-- <remap from="~depth" to="/camera/depth/image_rect_raw" /> -->
+        <remap from="~depth" to="/camera/aligned_depth_to_infra1/image_raw" />
         <remap from="~loop_path" to="/loop_fusion/pose_graph_path" />
         <remap from="~extrinsic_pose" to="/vins_estimator/extrinsic" />
         <param name="save_name" value="$(find surfel_fusion)/../../../output_map"/>

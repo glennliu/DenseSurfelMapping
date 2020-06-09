@@ -10,6 +10,12 @@
 #include <message_filters/sync_policies/exact_time.h>
 #include <message_filters/sync_policies/approximate_time.h>
 
+#include "backward.hpp"
+
+namespace backward {
+    backward::SignalHandling sh;
+}
+
 typedef message_filters::sync_policies::ExactTime<sensor_msgs::PointCloud, nav_msgs::Path, nav_msgs::Odometry> exact_policy;
 
 #include <surfel_map.h>

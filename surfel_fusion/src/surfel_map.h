@@ -36,6 +36,8 @@
 // #include <parameters.h>
 // #include <opengl_render/render_tool.h>
 
+
+
 typedef pcl::PointXYZI PointType;
 typedef pcl::PointXYZRGBNormal RgbPointType;
 typedef pcl::PointCloud<PointType> PointCloud;

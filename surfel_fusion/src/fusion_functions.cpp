@@ -58,6 +58,7 @@ void FusionFunctions::fuse_initialize_map(
 
     generate_super_pixels();
     // generate_super_pixels_openmp();
+    debug_show(debug_img);
 
     end_time = std::chrono::system_clock::now();
     total_time = end_time - start_time;
@@ -90,7 +91,7 @@ void FusionFunctions::fuse_initialize_map(
     total_time = end_time - start_time;
   //  printf("FusionFunctions::initialize superpixels cost %f ms.\n", total_time.count() * 1000.0);
 
-    debug_img = debug_image;
+    // debug_img = debug_image;
 }
 
 void FusionFunctions::project(float &x, float &y, float &z, float &u, float &v)
@@ -1596,38 +1597,35 @@ void FusionFunctions::generate_super_pixels()
         update_seeds();
     }
     calculate_norms();
-    debug_show();
+    // debug_show();
 }
 
-void FusionFunctions::debug_show()
+void FusionFunctions::debug_show(cv::Mat &input_img)
 {
     cv::Mat result = cv::Mat(image_height, image_width, CV_8UC3);
-    cv::Mat final_img;
+    cv::Vec3b this_norm, this_color;
+    int sp_index;
 
+/*
     for (int j = 0; j < image_height; j++)
         for (int i = 0; i < image_width; i++)
         {
             // pixel sp index
             int sp_index = superpixel_index[j * image_width + i];
-            cv::Vec3b this_norm;
-            cv::Vec3b this_color;
-            this_norm[0] = fabs(superpixel_seeds[sp_index].norm_x) * 255;
-            this_norm[1] = fabs(superpixel_seeds[sp_index].norm_y) * 255;
-            this_norm[2] = fabs(superpixel_seeds[sp_index].norm_z) * 255;
-            this_color = superpixel_seeds[sp_index].rgb_color;
 
             if(raw_image.channels() ==3){
+                std::cout<<"RGB frame!"<<std::endl;
+                this_color = superpixel_seeds[sp_index].rgb_color;
                 result.at<cv::Vec3b>(j, i) = cv::Vec3b(this_color[2],this_color[1],this_color[0]);
-            } else
+            } else{
+                this_norm[0] = fabs(superpixel_seeds[sp_index].norm_x) * 255;
+                this_norm[1] = fabs(superpixel_seeds[sp_index].norm_y) * 255;
+                this_norm[2] = fabs(superpixel_seeds[sp_index].norm_z) * 255;
                 result.at<cv::Vec3b>(j, i) = this_norm;
-//            printf("index: %d \n",sp_index);
-//            printf("index:%d, norm_x: %d, norm_y: %d, norm_z:%d, r:%d, g: %d, b:%d \n",
-//                    sp_index, this_norm[0], this_norm[1], this_norm[2], this_color[0], this_color[1], this_color[2]);
-//            printf("index: %d, r: %d, g:%d, b: %d \n",sp_index,this_color[0],this_color[1],this_color[2]);
-//            if(this_color[0]!=0 && this_color[1]!=0){
-//                result.at<cv::Vec3b>(i,j) = this_color;
-//            }
+            }
         }
+    */
+
     for (int i = 0; i < superpixel_index.size(); i++)
     {
         int p_x = i % image_width;
@@ -1636,7 +1634,6 @@ void FusionFunctions::debug_show()
         if (p_x + 1 < image_width && superpixel_index[i + 1] != my_index){
             result.at<cv::Vec3b>(p_y, p_x) = cv::Vec3b(0, 0, 0);
 //            printf("px: %d, py: %d \n", p_x, p_y);
-
         }
         if (p_y + 1 < image_height && superpixel_index[i + image_width] != my_index){
             result.at<cv::Vec3b>(p_y, p_x) = cv::Vec3b(0, 0, 0);
@@ -1645,22 +1642,48 @@ void FusionFunctions::debug_show()
     }
 
     if(raw_image.channels() == 3 ){
+        for (int j = 0; j < image_height; j++){
+            for (int i = 0; i < image_width; i++){
+                sp_index = superpixel_index[j * image_width + i];
+                // std::cout<<"RGB frame!"<<std::endl;
+                this_color = superpixel_seeds[sp_index].rgb_color;
+                result.at<cv::Vec3b>(j, i) = cv::Vec3b(this_color[2],this_color[1],this_color[0]);
+            }
+        }
         cv::cvtColor(raw_image,raw_image,cv::COLOR_BGR2RGB);
         cv::Mat matArray[] = {raw_image,result};
-        cv::hconcat(matArray,2,debug_image);
+        cv::hconcat(matArray,2,input_img);
+    }
+    else if(raw_image.channels() ==1){
+        for (int j = 0; j < image_height; j++){
+            for (int i = 0; i < image_width; i++){
+                sp_index = superpixel_index[j * image_width + i];
+                if(!superpixel_seeds[sp_index].norm_x){
+                    ROS_ERROR("superpixel norm is empty!");
+                    // std::cout<<"norm_x: "<<fabs(superpixel_seeds[sp_index].norm_x) * 255<<std::endl;
+                    return;
+                }
+                else{
+                    this_norm[0] = fabs(superpixel_seeds[sp_index].norm_x) * 255;
+                    this_norm[1] = fabs(superpixel_seeds[sp_index].norm_y) * 255;
+                    this_norm[2] = fabs(superpixel_seeds[sp_index].norm_z) * 255;
+                    result.at<cv::Vec3b>(j, i) = this_norm;
+                }
+
+            }
+        }
+        input_img = result;
     }
     else{
-//        cv::Mat matArray[] = {grey_image,result};
-//        cv::hconcat(matArray,2,debug_image);
-        debug_image = result;
+        input_img = cv::Mat(640,480,CV_8UC3,cv::Scalar(0,0,0));
     }
 
-    std::string pic_full_dir  = "/home/lch/Pictures/" + std::string(std::to_string(frame_index_))
-            + std::string(".png") ;
+    // std::string pic_full_dir  = "/home/lch/Pictures/" + std::string(std::to_string(frame_index_))
+    //         + std::string(".png") ;
 //    cv::imwrite(pic_full_dir,debug_image);
 //    cv::imshow("superpixel norm", debug_image);
     // cv::imwrite("/home/wang/average_norm.png", result);
     // cv::imwrite("/home/wang/huber_norm.png", result);
     // cv::imshow("input grey_image", grey_image);
-    cv::waitKey(5);
+    // cv::waitKey(5);
 }
