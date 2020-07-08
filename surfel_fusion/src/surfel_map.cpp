@@ -68,7 +68,7 @@ inactive_pointcloud(new PointCloud)
     //
     is_first_path = true;
     extrinsic_matrix_initialized = false;
-    surfel_state = false;
+    surfel_state = true;
 }
 
 SurfelMap::~SurfelMap()

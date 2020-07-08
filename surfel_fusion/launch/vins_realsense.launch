@@ -28,8 +28,7 @@
 
     </node>
 
-    <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false"
-          args="-d $(find rviz_visual_tools)/launch/map.rviz">
-    </node>
+    <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false" args="-d $(find surfel_fusion)/launch/map.rviz"/>
+          <!-- args="-d $(find surfel_fusion)/launch/map.rviz"/> -->
 
 </launch>
