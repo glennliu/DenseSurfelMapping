@@ -133,6 +133,7 @@ void SurfelMap::save_map(const std_msgs::StringConstPtr &save_map_input)
 void SurfelMap::image_input(const sensor_msgs::ImageConstPtr &image_input)
 {
     if(surfel_state){
+        write_rgb_to_ply = false;
 //         printf("receive grey_image!\n");
 //        cv_bridge::CvImagePtr image_ptr = cv_bridge::toCvCopy(image_input, sensor_msgs::image_encodings::TYPE_8UC1);
         cv_bridge::CvImagePtr image_ptr = cv_bridge::toCvCopy(image_input);
@@ -149,6 +150,7 @@ void SurfelMap::image_input(const sensor_msgs::ImageConstPtr &image_input)
 void SurfelMap::color_input(const sensor_msgs::ImageConstPtr &image_input)
 {
     if(surfel_state){
+        write_rgb_to_ply = true;
 
 //        printf("receive color!\n");
         cv_bridge::CvImagePtr image_ptr = cv_bridge::toCvCopy(image_input, sensor_msgs::image_encodings::TYPE_8UC3);
@@ -921,17 +923,18 @@ void SurfelMap::push_a_surfel(vector<float> &vertexs, SurfelElement &this_surfel
     }
     else {
         vertexs.push_back(point1(0));vertexs.push_back(point1(1));vertexs.push_back(point1(2));
-        vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
+        vertexs.push_back(surfel_norm[0]);vertexs.push_back(surfel_norm[1]);vertexs.push_back(surfel_norm[2]);
         vertexs.push_back(point2(0));vertexs.push_back(point2(1));vertexs.push_back(point2(2));
-        vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
+        vertexs.push_back(surfel_norm[0]);vertexs.push_back(surfel_norm[1]);vertexs.push_back(surfel_norm[2]);
         vertexs.push_back(point3(0));vertexs.push_back(point3(1));vertexs.push_back(point3(2));
-        vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
+        vertexs.push_back(surfel_norm[0]);vertexs.push_back(surfel_norm[1]);vertexs.push_back(surfel_norm[2]);
         vertexs.push_back(point4(0));vertexs.push_back(point4(1));vertexs.push_back(point4(2));
-        vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
+        vertexs.push_back(surfel_norm[0]);vertexs.push_back(surfel_norm[1]);vertexs.push_back(surfel_norm[2]);
         vertexs.push_back(point5(0));vertexs.push_back(point5(1));vertexs.push_back(point5(2));
-        vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
+        vertexs.push_back(surfel_norm[0]);vertexs.push_back(surfel_norm[1]);vertexs.push_back(surfel_norm[2]);
         vertexs.push_back(point6(0));vertexs.push_back(point6(1));vertexs.push_back(point6(2));
-        vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
+        vertexs.push_back(surfel_norm[0]);vertexs.push_back(surfel_norm[1]);vertexs.push_back(surfel_norm[2]);
+        // vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);vertexs.push_back(surfel_color);
     }
 
 
@@ -964,7 +967,8 @@ void SurfelMap::save_mesh(string save_path_name)
     size_t numPoints;
     size_t numSurfels;
     int num_vertex_ele;
-    if(write_normal_to_ply){
+    if(write_rgb_to_ply){
+        // if(){}
         num_vertex_ele = 9;
         numPoints = vertexs.size()/9;
         numSurfels = numPoints/9;
@@ -974,12 +978,13 @@ void SurfelMap::save_mesh(string save_path_name)
         stream << "property float x" << std::endl;
         stream << "property float y" << std::endl;
         stream << "property float z" << std::endl;
-        stream << "property uchar red" << std::endl;
-        stream << "property uchar green" << std::endl;
-        stream << "property uchar blue" << std::endl;
         stream << "property float nx" << std::endl;
         stream << "property float ny" << std::endl;
         stream << "property float nz" << std::endl;
+        stream << "property uchar red" << std::endl;
+        stream << "property uchar green" << std::endl;
+        stream << "property uchar blue" << std::endl;
+
         stream << "element face " << numSurfels * 4 <<  std::endl;
         stream << "property list uchar int vertex_index" << std::endl;
         stream << "end_header" << std::endl;
@@ -994,9 +999,9 @@ void SurfelMap::save_mesh(string save_path_name)
         stream << "property float x" << std::endl;
         stream << "property float y" << std::endl;
         stream << "property float z" << std::endl;
-        stream << "property uchar red" << std::endl;
-        stream << "property uchar green" << std::endl;
-        stream << "property uchar blue" << std::endl;
+        stream << "property float nx" << std::endl;
+        stream << "property float ny" << std::endl;
+        stream << "property float nz" << std::endl;
         stream << "element face " << numSurfels * 4 <<  std::endl;
         stream << "property list uchar int vertex_index" << std::endl;
         stream << "end_header" << std::endl;

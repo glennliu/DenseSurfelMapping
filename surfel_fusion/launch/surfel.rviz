@@ -265,8 +265,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: -9999
-        Min Value: 9999
+        Max Value: 0.448079944
+        Min Value: -1.9315486
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -294,7 +294,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /surfel_fusion/sp_image
+      Image Topic: /camera/infra1/image_rect_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -352,7 +352,7 @@ Visualization Manager:
       Pitch: 0.590204
       Target Frame: drone
       Value: XYOrbit (rviz)
-      Yaw: 3.33042741
+      Yaw: 3.33542752
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 4.04827738

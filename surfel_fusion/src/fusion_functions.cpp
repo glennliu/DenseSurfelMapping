@@ -315,7 +315,7 @@ void FusionFunctions::fuse_surfels_kernel(
         local_surfels[i].nz = new_norm_w(2);
         local_surfels[i].weight = sum_weight;
         local_surfels[i].color = superpixel_seeds[sp_index].mean_intensity;
-        local_surfels[i].rgb_color = superpixel_seeds[sp_index].rgb_color;
+        //local_surfels[i].rgb_color = superpixel_seeds[sp_index].rgb_color;
         float new_size = superpixel_seeds[sp_index].size * fabs(superpixel_seeds[sp_index].mean_depth / (camera_f * superpixel_seeds[sp_index].view_cos));
         if (new_size < local_surfels[i].size)
             local_surfels[i].size = new_size;
@@ -371,8 +371,9 @@ void FusionFunctions::initialize_surfels(
         new_ele.weight = get_weight(superpixel_seeds[i].mean_depth);
         new_ele.update_times = 1;
         new_ele.last_update = reference_frame_index;
-//        if(raw_image.channels() == 3){
+        // if(raw_image.channels() == 3){
         new_ele.rgb_color = superpixel_seeds[i].rgb_color;
+        // }
 
         new_surfels.push_back(new_ele);
     }

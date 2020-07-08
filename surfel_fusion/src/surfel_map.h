@@ -183,6 +183,7 @@ public:
     // save map
     string map_dir;
     bool write_normal_to_ply;
+    bool write_rgb_to_ply;
 
     // for gaofei experiment
     bool is_first_path;
